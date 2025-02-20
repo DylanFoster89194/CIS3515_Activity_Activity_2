@@ -8,31 +8,45 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
+package edu.temple.activities
+
+import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+
 class TextSizeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_text_size) // Ensure this is correct
 
         // Create array of integers that are multiples of 5
-        // Verify correctness by examining array values.
-        val textSizes = Array(20){(it + 1) * 5}
+        val textSizes = Array(20) { (it + 1) * 5 }
 
         Log.d("Array values", textSizes.contentToString())
 
-        with (findViewById(R.id.textSizeSelectorRecyclerView) as RecyclerView) {
+        with(findViewById<RecyclerView>(R.id.textSizeSelectorRecyclerView)) {
 
-            // TODO Step 2: Pass selected value back to activity that launched TextSizeActivity
-            adapter = TextSizeAdapter(textSizes){
-
+            // Step 2: Pass selected value back to DisplayActivity
+            adapter = TextSizeAdapter(textSizes) { selectedSize ->
+                val resultIntent = Intent().apply {
+                    putExtra("SELECTED_TEXT_SIZE", selectedSize)
+                }
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
             }
+
             layoutManager = LinearLayoutManager(this@TextSizeActivity)
         }
-
-
-
     }
 }
+
 
 
 /* Convert to RecyclerView.Adapter */
